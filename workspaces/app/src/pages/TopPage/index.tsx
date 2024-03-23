@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { map } from 'lodash';
 import dayjs from 'dayjs';
 import { Suspense, useId } from 'react';
 
@@ -40,7 +40,7 @@ const TopPage: React.FC = () => {
           <Spacer height={Space * 2} />
           <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
             <Flex align="stretch" direction="row" gap={Space * 2} justify="flex-start">
-              {_.map(featureList, (feature) => (
+              {map(featureList, (feature) => (
                 <FeatureCard key={feature.id} book={feature.book}/>
               ))}
             </Flex>
@@ -56,7 +56,7 @@ const TopPage: React.FC = () => {
           <Spacer height={Space * 2} />
           <Box maxWidth="100%" overflowX="hidden" overflowY="hidden">
             <Flex align="center" as="ul" direction="column" justify="center">
-              {_.map(rankingList, (ranking) => (
+              {map(rankingList, (ranking) => (
                 <RankingCard key={ranking.id} book={ranking.book}/>
               ))}
             </Flex>
@@ -72,7 +72,7 @@ const TopPage: React.FC = () => {
           <Spacer height={Space * 2} />
           <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
             <Flex align="stretch" gap={Space * 2} justify="flex-start">
-              {_.map(release.books, (book) => (
+              {map(release.books, (book) => (
                 <BookCard key={book.id} book={book}/>
               ))}
             </Flex>
