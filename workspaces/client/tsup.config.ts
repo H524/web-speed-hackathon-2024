@@ -5,6 +5,7 @@ import { pnpmWorkspaceRoot as findWorkspaceDir } from '@node-kit/pnpm-workspace-
 import { polyfillNode } from 'esbuild-plugin-polyfill-node';
 import findPackageDir from 'pkg-dir';
 import { defineConfig } from 'tsup';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import type { Options } from 'tsup';
 
 export default defineConfig(async (): Promise<Options[]> => {
@@ -15,6 +16,8 @@ export default defineConfig(async (): Promise<Options[]> => {
 
   const SEED_IMAGE_DIR = path.resolve(WORKSPACE_DIR, './workspaces/server/seeds/images');
   const IMAGE_PATH_LIST = fs.readdirSync(SEED_IMAGE_DIR).map((file) => `/images/${file}`);
+
+  // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
   return [
     {
@@ -54,14 +57,15 @@ export default defineConfig(async (): Promise<Options[]> => {
         '.wasm': 'binary',
       },
       metafile: true,
-      minify: false,
+      minify: true,
       outDir: OUTPUT_DIR,
       platform: 'browser',
       shims: true,
       sourcemap: 'inline',
-      splitting: false,
+      splitting: true,
       target: ['chrome58', 'firefox57', 'safari11', 'edge18'],
-      treeshake: false,
+      treeshake: true,
+
     },
   ];
 });
