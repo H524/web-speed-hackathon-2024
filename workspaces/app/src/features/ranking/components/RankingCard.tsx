@@ -15,6 +15,7 @@ import { useBook } from '../../book/hooks/useBook';
 
 const _Wrapper = styled.li`
   width: 100%;
+  height: 130px;
 `;
 
 const _Link = styled(Link)`
