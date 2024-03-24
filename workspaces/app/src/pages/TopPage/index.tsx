@@ -2,10 +2,10 @@ import { map } from 'lodash';
 import dayjs from 'dayjs';
 import { Suspense, useId } from 'react';
 
-import { BookCard } from '../../features/book/components/BookCard';
-import { FeatureCard } from '../../features/feature/components/FeatureCard';
+// import { BookCard } from '../../features/book/components/BookCard';
+// import { FeatureCard } from '../../features/feature/components/FeatureCard';
 import { useFeatureList } from '../../features/feature/hooks/useFeatureList';
-import { RankingCard } from '../../features/ranking/components/RankingCard';
+// import { RankingCard } from '../../features/ranking/components/RankingCard';
 import { useRankingList } from '../../features/ranking/hooks/useRankingList';
 import { useRelease } from '../../features/release/hooks/useRelease';
 import { Box } from '../../foundation/components/Box';
@@ -15,7 +15,13 @@ import { Text } from '../../foundation/components/Text';
 import { Color, Space, Typography } from '../../foundation/styles/variables';
 import { getDayOfWeekStr } from '../../lib/date/getDayOfWeekStr';
 
+const { BookCard } = lazyImport(() => import('../../features/book/components/BookCard'), 'BookCard');
+const { FeatureCard } = lazyImport(() => import('../../features/feature/components/FeatureCard'), 'FeatureCard');
+const { RankingCard } = lazyImport(() => import('../../features/ranking/components/RankingCard'), 'RankingCard');
+
+
 import { CoverSection } from './internal/CoverSection';
+import { lazyImport } from '../../../../client/src/utils/loadLazy';
 
 const TopPage: React.FC = () => {
   const todayStr = getDayOfWeekStr(dayjs());
@@ -38,10 +44,12 @@ const TopPage: React.FC = () => {
             ピックアップ
           </Text>
           <Spacer height={Space * 2} />
-          <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
+          <Box maxWidth="100%" overflowX="scroll" overflowY="hidden" height={223}>
             <Flex align="stretch" direction="row" gap={Space * 2} justify="flex-start">
               {map(featureList, (feature) => (
-                <FeatureCard key={feature.id} book={feature.book}/>
+                <Suspense fallback={<>Loading...</>}>
+                  <FeatureCard key={feature.id} book={feature.book}/>
+                </Suspense>
               ))}
             </Flex>
           </Box>
@@ -57,7 +65,9 @@ const TopPage: React.FC = () => {
           <Box maxWidth="100%" overflowX="hidden" overflowY="hidden">
             <Flex align="center" as="ul" direction="column" justify="center">
               {map(rankingList, (ranking) => (
-                <RankingCard key={ranking.id} book={ranking.book}/>
+                <Suspense fallback={<>Loading...</>}>
+                  <RankingCard key={ranking.id} book={ranking.book}/>
+                </Suspense>
               ))}
             </Flex>
           </Box>
@@ -70,10 +80,12 @@ const TopPage: React.FC = () => {
             本日更新
           </Text>
           <Spacer height={Space * 2} />
-          <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
+          <Box maxWidth="100%" overflowX="scroll" overflowY="hidden" height={261}>
             <Flex align="stretch" gap={Space * 2} justify="flex-start">
               {map(release.books, (book) => (
-                <BookCard key={book.id} book={book}/>
+                <Suspense fallback={<>Loading...</>}>
+                  <BookCard key={book.id} book={book}/>
+                </Suspense>
               ))}
             </Flex>
           </Box>
