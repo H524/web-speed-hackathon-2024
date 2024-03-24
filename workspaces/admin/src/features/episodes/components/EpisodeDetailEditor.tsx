@@ -23,7 +23,6 @@ import { useFormik } from 'formik';
 import { useEffect, useRef, useState } from 'react';
 import * as yup from 'yup';
 
-import { encrypt } from '@wsh-2024/image-encrypt/src/encrypt';
 import type { GetBookResponse } from '@wsh-2024/schema/src/api/books/GetBookResponse';
 import type { GetEpisodeResponse } from '@wsh-2024/schema/src/api/episodes/GetEpisodeResponse';
 
@@ -141,30 +140,9 @@ export const EpisodeDetailEditor: React.FC<Props> = ({ book, episode }) => {
     const blobUrl = URL.createObjectURL(file);
 
     try {
-      const image = new Image();
-      image.src = blobUrl;
-      await image.decode();
-
-      const canvas = document.createElement('canvas');
-      canvas.width = image.naturalWidth;
-      canvas.height = image.naturalHeight;
-      const ctx = canvas.getContext('2d')!;
-
-      encrypt({
-        exportCanvasContext: ctx,
-        sourceImage: image,
-        sourceImageInfo: {
-          height: image.naturalHeight,
-          width: image.naturalWidth,
-        },
-      });
-
-      const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'));
-      if (blob == null) return;
-
       createEpisodePage({
         episodeId: episode.id,
-        image: new File([blob], 'encrypted.png', { type: 'image/png' }),
+        image: new File([blobUrl], 'encrypted.png', { type: 'image/png' }),
         page: (episode.pages.at(-1)?.page ?? 0) + 1,
       });
     } finally {
