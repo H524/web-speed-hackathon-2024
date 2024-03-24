@@ -1,13 +1,8 @@
 import { useSetAtom } from 'jotai';
-import React, { useId } from 'react';
+import React, { Suspense, useId } from 'react';
 import styled from 'styled-components';
 
 import { DialogContentAtom } from '../atoms/DialogContentAtom';
-import { COMPANY } from '../constants/Company';
-import { CONTACT } from '../constants/Contact';
-import { OVERVIEW } from '../constants/Overview';
-import { QUESTION } from '../constants/Question';
-import { TERM } from '../constants/Term';
 import { Color, Space, Typography } from '../styles/variables';
 
 import { Box } from './Box';
@@ -15,6 +10,13 @@ import { Button } from './Button';
 import { Flex } from './Flex';
 import { Spacer } from './Spacer';
 import { Text } from './Text';
+import { lazyImport } from '../../../../client/src/utils/loadLazy';
+
+const { Company } = lazyImport(() => import('../constants/Company'), 'Company');
+const { Contact } = lazyImport(() => import('../constants/Contact'), 'Contact');
+const { Overview } = lazyImport(() => import('../constants/Overview'), 'Overview');
+const { Question } = lazyImport(() => import('../constants/Question'), 'Question');
+const { Term } = lazyImport(() => import('../constants/Term'), 'Term');
 
 const _Button = styled(Button)`
   color: ${Color.MONO_A};
@@ -46,9 +48,9 @@ export const Footer: React.FC = () => {
           利用規約
         </Text>
         <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {TERM}
-        </Text>
+        <Suspense fallback={<Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>読み込み中</Text>}>
+          <Term />
+        </Suspense>
       </_Content>,
     );
   };
@@ -60,9 +62,9 @@ export const Footer: React.FC = () => {
           お問い合わせ
         </Text>
         <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {CONTACT}
-        </Text>
+        <Suspense fallback={<Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>読み込み中</Text>}>
+          <Contact />
+        </Suspense>
       </_Content>,
     );
   };
@@ -74,23 +76,23 @@ export const Footer: React.FC = () => {
           Q&A
         </Text>
         <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {QUESTION}
-        </Text>
+        <Suspense fallback={<Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>読み込み中</Text>}>
+          <Question />
+        </Suspense>
       </_Content>,
     );
   };
 
-  const handleRequestToCompanyDialogOpen = () => {
+  const handleRequestToCompanyDialogOpen = async () => {
     updateDialogContent(
       <_Content aria-labelledby={companyDialogA11yId} role="dialog">
         <Text as="h2" color={Color.MONO_100} id={companyDialogA11yId} typography={Typography.NORMAL16}>
           運営会社
         </Text>
         <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {COMPANY}
-        </Text>
+        <Suspense fallback={<Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>読み込み中</Text>}>
+          <Company />
+        </Suspense>
       </_Content>,
     );
   };
@@ -102,9 +104,9 @@ export const Footer: React.FC = () => {
           Cyber TOONとは
         </Text>
         <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {OVERVIEW}
-        </Text>
+        <Suspense fallback={<Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>読み込み中</Text>}>
+          <Overview />
+        </Suspense>
       </_Content>,
     );
   };
@@ -112,7 +114,7 @@ export const Footer: React.FC = () => {
   return (
     <Box as="footer" backgroundColor={Color.Background} p={Space * 1}>
       <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
-        <img alt="Cyber TOON" src="/assets/cyber-toon.svg" />
+        <img alt="Cyber TOON" src="/assets/cyber-toon.webp" />
         <Flex align="start" direction="row" gap={Space * 1.5} justify="center">
           <_Button disabled={!isClient} onClick={handleRequestToTermDialogOpen}>
             利用規約
