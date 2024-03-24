@@ -27,6 +27,7 @@ import { isContains } from '../../lib/filter/isContains';
 
 import { AuthorDetailModal } from './internal/AuthorDetailModal';
 import { CreateAuthorModal } from './internal/CreateAuthorModal';
+import { isContainsKana } from '../../../../app/src/lib/filter/isContains';
 
 const AuthorSearchKind = {
   AuthorId: 'AuthorId',
@@ -84,7 +85,7 @@ export const AuthorListPage: React.FC = () => {
       }
       case AuthorSearchKind.AuthorName: {
         return authorList.filter((author) => {
-          return isContains({ query: formik.values.query, target: author.name });
+          return isContainsKana({ query: formik.values.query, target: author.name });
         });
       }
       default: {

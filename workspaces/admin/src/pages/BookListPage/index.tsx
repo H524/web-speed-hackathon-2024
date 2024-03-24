@@ -27,6 +27,7 @@ import { isContains } from '../../lib/filter/isContains';
 
 import { BookDetailModal } from './internal/BookDetailModal';
 import { CreateBookModal } from './internal/CreateBookModal';
+import { isContainsHira, isContainsKana } from '../../../../app/src/lib/filter/isContains';
 
 const BookSearchKind = {
   AuthorId: 'AuthorId',
@@ -88,7 +89,7 @@ export const BookListPage: React.FC = () => {
         return bookList.filter((book) => {
           return (
             isContains({ query: formik.values.query, target: book.name }) ||
-            isContains({ query: formik.values.query, target: book.nameRuby })
+            isContainsHira({ query: formik.values.query, target: book.nameRuby })
           );
         });
       }
@@ -97,7 +98,7 @@ export const BookListPage: React.FC = () => {
       }
       case BookSearchKind.AuthorName: {
         return bookList.filter((book) => {
-          return isContains({ query: formik.values.query, target: book.author.name });
+          return isContainsKana({ query: formik.values.query, target: book.author.name });
         });
       }
       default: {
