@@ -23,6 +23,7 @@ const _Button = styled(Button)`
 `;
 
 const _Content = styled.section`
+  height: 90px;
   white-space: pre-line;
 `;
 
@@ -114,7 +115,7 @@ export const Footer: React.FC = () => {
   return (
     <Box as="footer" backgroundColor={Color.Background} p={Space * 1}>
       <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
-        <img alt="Cyber TOON" src="/assets/cyber-toon.webp" />
+        <img alt="Cyber TOON" src="/assets/cyber-toon.webp" width={189} height={45} />
         <Flex align="start" direction="row" gap={Space * 1.5} justify="center">
           <_Button disabled={!isClient} onClick={handleRequestToTermDialogOpen}>
             利用規約
